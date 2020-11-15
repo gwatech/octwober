@@ -17,7 +17,7 @@ client.on('message', async (message: Message): Promise<Message | MessageReaction
     const data = await functions.parseCommand(message);
     if (data?.command) return data.command.exec(client, message, data.content);
     
-    if (message.channel.id !== '776312696390811658') return;
+    if (message.channel.id !== '777473504060768316') return;
     functions.counting(message);
 });
 

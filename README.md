@@ -9,7 +9,7 @@
 - Clone/Download the repository.
 - Move to the bot's directory.
 - Run `npm install`.
-- Edit `src/core/config.example.ts` and rename it to `config.ts`.
+- Edit `src/bot/core/config.example.ts` and rename it to `config.ts`.
 - Compile `tsc index.ts`
 - Run the bot `node dist/index.js`
 

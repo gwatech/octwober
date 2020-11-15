@@ -1,0 +1,4 @@
+src/bot/core/config.ts
+node_modules
+package-lock.json
+dist

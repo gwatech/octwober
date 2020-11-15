@@ -101,6 +101,9 @@ export default class Funtions {
         } catch (e) {
             return;
         }
+
+        if (isNaN(count)) return;
+
         if (num === 0 && (count > 1 || count < 1)) {
             num = 0;
             lastUser = undefined;

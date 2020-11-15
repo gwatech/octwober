@@ -2,7 +2,7 @@ import { Message } from 'discord.js';
 import { readdirSync } from 'fs';
 import Client from '../client/client';
 
-const commandFiles = readdirSync('./dist/bot/commands');
+const commandFiles = readdirSync('./bot/commands');
 
 export const command = {
 	name: 'reload',

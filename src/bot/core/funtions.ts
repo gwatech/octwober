@@ -55,7 +55,7 @@ export default class Funtions {
     }
 
     public loadCommands(client: Client) {
-        const commandFiles = readdirSync('./dist/bot/commands');
+        const commandFiles = readdirSync('./bot/commands');
         for (const file of commandFiles) {
             const { command } = require(`../commands/${file}`);
             client.commands.set(command.name, command);

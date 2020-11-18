@@ -56,8 +56,11 @@ export default class Funtions {
 
     public loadCommands(client: Client) {
         const commandFiles = readdirSync('./bot/commands');
+        let index = 0;
         for (const file of commandFiles) {
             const { command } = require(`../commands/${file}`);
+            ++index;
+            console.log(`.${index.toString().padStart(2, '2')}Loaded ${command.name}`)
             client.commands.set(command.name, command);
         }
     }

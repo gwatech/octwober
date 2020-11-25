@@ -1,8 +1,9 @@
 import { Message } from 'discord.js';
 import { readdirSync } from 'fs';
 import Client from '../client/client';
+import path from 'path';
 
-const commandFiles = readdirSync('./bot/commands');
+const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
 
 export const command = {
 	name: 'reload',

@@ -1,14 +1,15 @@
 import { Message } from 'discord.js';
 import { readdirSync } from 'fs';
-import Client from '../client/client';
+import Client, { Command } from '../client/client';
 import path from 'path';
 
 const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
 
-export const command = {
+export const command: Command = {
 	name: 'reload',
 	description: 'Reload',
 	aliases: ['r'],
+	ownerOnly: true,
 	exec(client: Client, message: Message, args: Array<any>) {
 		let str: string;
 		if (args.length) {

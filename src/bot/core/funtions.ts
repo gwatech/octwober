@@ -2,6 +2,7 @@ import { Message, MessageReaction, User } from 'discord.js';
 import { readdirSync } from 'fs';
 import { evaluate } from 'mathjs';
 import Client, { Command } from '../client/client';
+import path from 'path';
 
 let num = 0;
 let lastUser = undefined;
@@ -55,7 +56,7 @@ export default class Funtions {
     }
 
     public loadCommands(client: Client) {
-        const commandFiles = readdirSync('./bot/commands');
+        const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
         let index = 0;
         for (const file of commandFiles) {
             const { command } = require(`../commands/${file}`);

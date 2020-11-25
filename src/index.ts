@@ -1,6 +1,8 @@
+import Env from 'dotenv';
+Env.config();
+
 import Client from './bot/client/client';
 import { GuildMember, Message, MessageReaction, TextChannel } from 'discord.js';
-import { config } from './bot/core/config';
 import Functions from './bot/core/funtions';
 
 const client = new Client();
@@ -36,4 +38,4 @@ client.on('guildMemberRemove', (member: GuildMember): Promise<Message> => {
     : channel.send(`<a:crii:765561558335225887> **${member.user.username}** left the server! ${functions.randomMessage()}`);
 });
 
-client.start(config.token);
+client.start(process.env.TOKEN);

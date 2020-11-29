@@ -12,7 +12,7 @@ export const command: Command = {
     aliases: [],
     async exec(client: Client, message: Message, args: Array<any>) {
         const user = args[0];
-        const text = args.slice(1).join('');
+        const text = args.slice(1).join(' ');
 
         const msg = await message.channel.send('**Generating the image**');
 

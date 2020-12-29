@@ -4,9 +4,6 @@ import { evaluate } from 'mathjs';
 import Client, { Command } from '../client/client';
 import path from 'path';
 
-let num = 0;
-let lastUser = undefined;
-
 export default class Funtions {
     public async parseCommand(message: any) {
         let prefixes = message.client.prefix(message);
@@ -99,7 +96,13 @@ export default class Funtions {
     }
 
     public counting(message: Message): Promise<Message | MessageReaction> {
-        let count = 0;
+        const client = message.client as Client;
+        let { count, num, lastUser } = client.settings.get(message.guild.id, 'counting', {
+            count: 0,
+            num: 0,
+            lastUser: undefined
+        });
+
         try {
             count = evaluate(message.content);
         } catch (e) {
@@ -111,24 +114,44 @@ export default class Funtions {
         if (num === 0 && (count > 1 || count < 1)) {
             num = 0;
             lastUser = undefined;
+            void client.settings.set(message.guild.id, 'counting', {
+                num,
+                count,
+                lastUser
+            });
             message.react('765561568196034571');
             return message.channel.send('Incorrect number! The next number is `1`. **No stats have been changed since the current number was 0.**');
         } else if (count === num + 1) {
             if (lastUser && lastUser === message.author.id) {
                 message.react('765561568196034571');
-                lastUser = undefined;
                 const Lastnum: number = num;
+                lastUser = undefined;
                 num = 0;
+                void client.settings.set(message.guild.id, 'counting', {
+                    num,
+                    count,
+                    lastUser
+                });
                 return message.channel.send(`${message.author.toString()} RUINED IT AT \`${Lastnum}\` Next number is \`1\`. **You can't count two numbers in a row.**`);
             }
             lastUser = message.author.id;
             num++;
+            void client.settings.set(message.guild.id, 'counting', {
+                num,
+                count,
+                lastUser
+            });
             return message.react('711106998967599156');
         } else {
             message.react('765561568196034571');
-            lastUser = undefined;
             const Lastnum: number = num;
+            lastUser = undefined;
             num = 0;
+            void client.settings.set(message.guild.id, 'counting', {
+                num,
+                count,
+                lastUser
+            });
             return message.channel.send(`${message.author.toString()} RUINED IT AT \`${Lastnum}\` Next number is \`1\`. **Wrong number.**`);
         }
     }

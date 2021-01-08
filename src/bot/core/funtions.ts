@@ -5,15 +5,15 @@ import Client, { Command } from '../client/client';
 import path from 'path';
 
 export default class Funtions {
-    public async parseCommand(message: any) {
-        let prefixes = message.client.prefix(message);
+    public async parseCommand(message: Message) {
+        let prefixes: string | string[] = (message.client as Client).prefix(message);
         const mentions = [`<@${message.client.user.id}>`, `<@!${message.client.user.id}>`];
         prefixes = [...mentions, prefixes];
 
-        return this.parseMultiplePrefixes(message, prefixes.map((p: any) => [p, null]));
+        return this.parseMultiplePrefixes(message, prefixes.map((p: string) => [p, null]));
     }
 
-    public parseMultiplePrefixes(message: Message, pairs: Array<any>) {
+    public parseMultiplePrefixes(message: Message, pairs: Array<string[]>) {
         const parses = pairs.map(([prefix]) => this.parsePrefix(message, prefix));
         const result = parses.find(parsed => parsed.command);
         if (result) {
@@ -29,14 +29,16 @@ export default class Funtions {
     }
 
 
-    public parsePrefix(message: Message | any, prefix: string) {
+    public parsePrefix(message: Message, prefix: string) {
         const msg = message.content.toLowerCase();
         if (!msg.startsWith(prefix.toLowerCase())) return {};
+
+        const client = message.client as Client;
 
         const endOfPrefix = msg.indexOf(prefix.toLowerCase()) + prefix.length;
         const startOfArgs = message.content.slice(endOfPrefix).search(/\S/) + prefix.length;
         const alias = message.content.slice(startOfArgs).split(/\s{1,}|\n{1,}/)[0];
-        const command = message.client.commands.get(alias) || message.client.commands.find((cmd: Command) => cmd.aliases && cmd.aliases.includes(alias));
+        const command = client.commands.get(alias) || client.commands.find((cmd: Command) => cmd.aliases && cmd.aliases.includes(alias));
 
         const content = message.content.slice(startOfArgs + alias.length + 1) ? message.content.slice(startOfArgs + alias.length + 1).trim().split(/ +/) : [];
         const afterPrefix = message.content.slice(prefix.length).trim();
@@ -45,7 +47,7 @@ export default class Funtions {
             return { prefix, alias, content, afterPrefix };
         }
 
-        if (command.ownerOnly && message.author.id !== message.client.owner) {
+        if (command.ownerOnly && message.author.id !== client.owner) {
             return { prefix, alias, content, afterPrefix };
         }
 

@@ -54,13 +54,10 @@ export default class Funtions {
         return { command, prefix, alias, content, afterPrefix };
     }
 
-    public loadCommands(client: Client) {
+    public async loadCommands(client: Client) {
         const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
-        let index = 0;
         for (const file of commandFiles) {
             const { command } = require(`../commands/${file}`);
-            ++index;
-            console.log(`.${index.toString().padStart(2, '2')}Loaded ${command.name}`)
             client.commands.set(command.name, command);
         }
     }

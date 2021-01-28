@@ -1,7 +1,8 @@
 import { Message } from 'discord.js';
 import { readdirSync } from 'fs';
-import Client, { Command } from '../client/client';
+import Client from '../client/client';
 import path from 'path';
+import { Command } from '../core/Types';
 
 const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
 

@@ -1,8 +1,9 @@
 import { Message, MessageReaction, User } from 'discord.js';
 import { readdirSync } from 'fs';
 import { evaluate } from 'mathjs';
-import Client, { Command } from '../client/client';
+import Client from '../client/client';
 import path from 'path';
+import { Command } from './Types';
 
 export default class Funtions {
     public async parseCommand(message: Message) {
@@ -54,11 +55,18 @@ export default class Funtions {
         return { command, prefix, alias, content, afterPrefix };
     }
 
-    public async loadCommands(client: Client) {
+    public loadCommands(client: Client) {
         const commandFiles = readdirSync(path.join(__dirname, '..', 'commands'));
         for (const file of commandFiles) {
             const { command } = require(`../commands/${file}`);
             client.commands.set(command.name, command);
+        }
+    }
+
+    public loadListeners(client: Client) {
+        const files = readdirSync(path.join(__dirname, '..', 'listeners'));
+        for (const file of files) {
+            client.listener.push(file);
         }
     }
 

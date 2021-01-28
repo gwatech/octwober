@@ -1,6 +1,7 @@
 import { Message, MessageAttachment } from 'discord.js';
-import Client, { Command } from '../client/client';
+import Client from '../client/client';
 import fetch from 'node-fetch';
+import { Command } from '../core/Types';
 
 interface ImageAPI {
     message: string;

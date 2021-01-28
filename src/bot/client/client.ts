@@ -1,25 +1,23 @@
 import { Client as DiscordClient, ClientOptions, Collection, Message } from 'discord.js';
 import Database from '../core/Database';
 import SettingsProvider from '../core/SettingsProvider';
+import { Command, Listener } from '../core/Types';
+import Funtions from '../core/funtions';
 
-export type Command = {
-    name: string;
-    description: string;
-    aliases: Array<string>;
-    exec: (client: Client, message: Message, args?: Array<any>) => Promise<any>;
-    ownerOnly?: boolean;
-}
+const functions = new Funtions();
 
 class Client extends DiscordClient {
-    mongo: Database; 
-    settings: SettingsProvider;
-    commands: Collection<string, Command>;
-    owner: string;
+    public mongo: Database; 
+    public settings: SettingsProvider;
+    public commands: Collection<string, Command>;
+    public listener: Array<string>;
+    public owner: string;
     prefix: (message: Message) => string;
 
     constructor(options: ClientOptions | {} = {}) {
         super(options);
         this.commands = new Collection();
+        this.listener = new Array();
     }
 
     public async setup() {
@@ -34,6 +32,16 @@ class Client extends DiscordClient {
 			useUnifiedTopology: true
         });
         await this.mongo.connect();
+        
+        functions.loadCommands(this);
+        
+        this.listener.forEach(file => {
+            const event = require(`../listeners/${file}`);
+            if (typeof event !== 'function') return;
+            const eventName = file.split('.')[0];
+
+            this.on(eventName, event.bind(null, this));
+        });
 
         this.settings = new SettingsProvider(this.mongo.db('tsbot').collection('settings'));
         await this.settings.init();

@@ -12,7 +12,7 @@ class Client extends DiscordClient {
     public commands: Collection<string, Command>;
     public listener: Array<string>;
     public owner: string;
-    prefix: (message: Message) => string;
+    public prefix: (message: Message) => string;
 
     constructor(options: ClientOptions | {} = {}) {
         super(options);
@@ -34,13 +34,15 @@ class Client extends DiscordClient {
         await this.mongo.connect();
         
         functions.loadCommands(this);
-        
+        functions.loadListeners(this);
+
         this.listener.forEach(file => {
             const event = require(`../listeners/${file}`);
-            if (typeof event !== 'function') return;
+
+            if (typeof event.default !== 'function') return;
             const eventName = file.split('.')[0];
 
-            this.on(eventName, event.bind(null, this));
+            this.on(eventName, event.default.bind(null, this));
         });
 
         this.settings = new SettingsProvider(this.mongo.db('tsbot').collection('settings'));
@@ -50,7 +52,7 @@ class Client extends DiscordClient {
 
     public async start(token: string) {
         await this.setup();
-        return this.login(token)
+        return this.login(token);
     }
 }
 

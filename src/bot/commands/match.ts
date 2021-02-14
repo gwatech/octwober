@@ -29,7 +29,7 @@ export const command = {
 
         client.setTimeout(() => {
             return msg.edit(embed);
-        }, 1000 * 15);
+        }, 1000 * 5);
     },
 
     resolveUser(user: Snowflake | string | undefined, message: Message): User {

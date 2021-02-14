@@ -16,19 +16,19 @@ export const command = {
 
         const msg = await message.channel.send('<a:google_assistant:765561564698771456> Finding Your Partner');
 
-        const embed = new MessageEmbed() 
-        .setColor('#ffb6c1')
-        .setDescription([
-            `${user} your partner is **${partner.tag}**`,
-            '',
-            '**Match Percentage**',
-            `💟 ${Math.floor(love)} %`,
-            '',
-            `${loveLevel}`
-        ]);
+        const embed = new MessageEmbed()
+            .setColor('#ffb6c1')
+            .setDescription([
+                `${user} your partner is **${partner.tag}**`,
+                '',
+                '**Match Percentage**',
+                `💟 ${Math.floor(love)} %`,
+                '',
+                `${loveLevel}`
+            ]);
 
         client.setTimeout(() => {
-            return msg.edit(embed);
+            return msg.edit('', { embed });
         }, 1000 * 5);
     },
 

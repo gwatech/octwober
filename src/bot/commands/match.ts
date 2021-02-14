@@ -19,10 +19,10 @@ export const command = {
         const embed = new MessageEmbed() 
         .setColor('#ffb6c1')
         .setDescription([
-            `${user} your partner is ${partner}`,
+            `${user} your partner is **${partner.tag}**`,
             '',
             '**Match Percentage**',
-            `💟 ${Math.floor(love)}`,
+            `💟 ${Math.floor(love)} %`,
             '',
             `${loveLevel}`
         ]);

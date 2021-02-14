@@ -6,7 +6,7 @@ export const command = {
     description: 'Matches your partener!',
     aliases: [],
     async exec(client: Client, message: Message, args: Array<any>) {
-        const user = this.resolveUser(args);
+        const user = this.resolveUser(args, message);
         const partner = message.guild.members.cache.random().user;
 
         const love = Math.random() * 100;

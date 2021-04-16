@@ -25,11 +25,11 @@ export const command = {
             .setDescription(account?.biography ?? '')
             .setThumbnail(account.profile_pic_url_hd)
             .setAuthor('Profile information')
-            .addField('Username:', `${account.username}`)
-            .addField('Full name:', `${account.full_name}`)
-            .addField('Posts:', `${account.edge_owner_to_timeline_media.count}`)
-            .addField('Followers:', `${account.edge_followed_by.count}`)
-            .addField('Following:', `${account.edge_follow.count}`)
+            .addField('Username:', account.username)
+            .addField('Full name:', account.full_name)
+            .addField('Posts:', account.edge_owner_to_timeline_media?.count ?? 0)
+            .addField('Followers:', account.edge_followed_by?.count ?? 0)
+            .addField('Following:', account.edge_follow?.count ?? 0)
             .addField('Account type:', account.is_private ? 'Private 🔐' : 'Public 🔓')
             .setTimestamp();
 

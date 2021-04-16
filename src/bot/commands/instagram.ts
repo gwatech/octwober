@@ -7,7 +7,7 @@ export const command = {
     description: 'Show\'s instagram account info!',
     aliases: ['insta', 'ig'],
     async exec(client: Client, message: Message, args: Array<any>) {
-
+        const msg = await message.channel.send('Searching...');
         const account = await (await fetch(`https://instagram40.p.rapidapi.com/account-info?username=${args[0]}`, {
             method: 'GET',
             headers: {
@@ -16,7 +16,7 @@ export const command = {
             }
         })).json();
 
-        if (account?.status === 'fail') return message.channel.send(account.message);
+        if (account?.status === 'fail') return msg.edit(account.message);
 
         const embed = new MessageEmbed()
             .setColor(0xff0651)
@@ -33,7 +33,7 @@ export const command = {
             .addField('Account type:', account.is_private ? 'Private 🔐' : 'Public 🔓')
             .setTimestamp();
 
-        return message.channel.send(embed);
+        return msg.edit('', embed);
     },
 
 };

@@ -1,0 +1,39 @@
+{
+  "name": "octwober",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "start": "tsc && node dist/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsayushch/octwober.git"
+  },
+  "author": "Ayush Chowdhury <itsayushch@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itsayushch/octwober/issues"
+  },
+  "homepage": "https://github.com/itsayushch/octwober#readme",
+  "dependencies": {
+    "@types/common-tags": "^1.8.0",
+    "chalk": "^4.1.1",
+    "common-tags": "^1.8.0",
+    "discord-akairo": "^8.1.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.8"
+  },
+  "imports": {
+    "#utils/*": "./dist/src/bot/utils/*.js",
+    "#struct/*": "./dist/src/bot/struct/*.js",
+    "#bot/*": "./dist/src/bot/*.js",
+    "#root/*": "./dist/*"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^3.6.16",
+    "@types/node": "^15.6.1"
+  }
+}

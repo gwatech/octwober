@@ -19,10 +19,11 @@ export default class HelpCommand extends Command {
 
 	public async exec(message: Message, { command }: { command?: Command }) {
 		const prefix = (this.handler.prefix as PrefixSupplier)(message) as string;
+		const values = this.handler.categories.filter(f => f.id !== 'owner' &&  f.id !== 'default').values();
 		if (!command) {
 			const embed = new MessageEmbed()
 				.setAuthor('Command List', this.client.user!.displayAvatarURL());
-			for (const category of this.handler.categories.values()) {
+			for (const category of values) {
 				embed.addField(
 					category.id.replace(/\b(\w)/g, char => char.toUpperCase()),
 					category.filter(cmd => cmd.aliases.length > 0).map(cmd => `\`${cmd.aliases[0]}\``).join(', ')

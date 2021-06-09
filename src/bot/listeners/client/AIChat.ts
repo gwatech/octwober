@@ -2,7 +2,7 @@ import { Listener } from 'discord-akairo';
 import { Message } from 'discord.js';
 import fetch from 'node-fetch';
 
-export default class ReadyListener extends Listener {
+export default class AIChatListener extends Listener {
     private readonly cooldowns: Set<string> = new Set();
     public constructor() {
         super('AIChat', {

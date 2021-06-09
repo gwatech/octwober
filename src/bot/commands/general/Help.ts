@@ -1,5 +1,6 @@
 import { Command, PrefixSupplier } from 'discord-akairo';
 import { Message, MessageEmbed } from 'discord.js';
+import { COLOR } from '#utils/Constants';
 
 export default class HelpCommand extends Command {
 	public constructor() {
@@ -34,6 +35,7 @@ export default class HelpCommand extends Command {
 		}
 
 		const embed = new MessageEmbed()
+			.setColor(COLOR)
 			.setTitle(`\`${prefix}${command.aliases[0]} ${command.description.usage as string || ''}\``)
 			.addField('Description', command.description.content || 'No description');
 

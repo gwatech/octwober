@@ -57,8 +57,6 @@ export default class TagAddCommand extends Command {
             lastModified: message.author.id
         });
 
-        return message.util?.send({
-            embed: { description: `Tag with the name **${name}** has been added.`, color: 11642864 }
-        });
+        return message.inlineReply(`Tag with the name **${name}** has been added.`);
     }
 }

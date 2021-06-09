@@ -32,8 +32,6 @@ export default class TagDeleteCommand extends Command {
 		const del = await this.client.tags.collection.deleteOne({ guild: message.guild!.id, name });
 		if (!del.deletedCount) return message.util!.send('**No matches found!**');
 		
-        return message.util?.send({
-            embed: { description: `Tag with the name **${name}** has been deleted.`, color: 11642864 }
-        });
+        return message.inlineReply(`Tag with the name **${name}** has been deleted.`);
 	}
 }

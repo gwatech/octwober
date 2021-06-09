@@ -1,6 +1,6 @@
 import { Command, Flag } from 'discord-akairo';
 import { stripIndents } from 'common-tags';
-import { Message } from 'discord.js';
+import { COLOR } from '#utils/Constants';
 
 export default class TagCommand extends Command {
     public constructor() {
@@ -36,7 +36,7 @@ export default class TagCommand extends Command {
                 ['tag-delete', 'delete', 'del'],
                 ['tag-search', 'search']
             ],
-            otherwise: () => this.client.util.embed().addField('• Description', this.description.content)
+            otherwise: () => this.client.util.embed().setColor(COLOR).addField('• Description', this.description.content)
         };
 
         return Flag.continue(sub);

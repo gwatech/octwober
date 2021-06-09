@@ -1,6 +1,6 @@
 import { Command, Argument } from 'discord-akairo';
 import { Message } from 'discord.js';
-import { SETTINGS } from '#utils/Constants';
+import { SETTINGS, COLOR } from '#utils/Constants';
 
 export default class extends Command {
 
@@ -18,6 +18,11 @@ export default class extends Command {
         });
     }
 
+    // @ts-expect-error
+	public regex() {
+		return new RegExp(`^<@!?(${this.client.user!.id})>$`, 'i');
+	}
+
     public *args(): any {
         const prefix = yield {
             type: Argument.validate('string', (msg: Message, p) => !/\s/.test(p) && p.length <= 3),
@@ -31,12 +36,12 @@ export default class extends Command {
     }
 
     public async exec(message: Message, { prefix }: { prefix: string }) {
-        if (!prefix) return message.util?.send(`The current prefix for this guild is \`${message.guild?.prefix}\``);
+        if (!prefix) return message.inlineReply(`The current prefix for this guild is \`${message.guild?.prefix}\``);
 
         if (prefix && !message.member?.permissions.has('MANAGE_GUILD')) {
             return message.util?.send({
                 embed: {
-                    color: 11642864,
+                    color: COLOR,
                     description: [
                         `The current prefix for this guild is \`${message.guild?.prefix}\``,
                         'You are missing `Manage Server` to change the prefix.'
@@ -49,7 +54,7 @@ export default class extends Command {
 
         return message.util?.send({
             embed: {
-                color: 11642864,
+                color: COLOR,
                 description: `The prefix has been set to \`${prefix}\``
             }
         });

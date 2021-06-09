@@ -1,5 +1,6 @@
 import { Message, MessageEmbed, User } from 'discord.js';
 import { Command } from 'discord-akairo';
+import { COLOR } from '#utils/Constants';
 
 export default class TagListCommand extends Command {
 	public constructor() {
@@ -26,13 +27,14 @@ export default class TagListCommand extends Command {
 
 		const embed = new MessageEmbed()
 			.setAuthor(message.guild!.name, message.guild!.iconURL()!)
-			.setDescription([
+			.setColor(COLOR)
+			.setDescription(allTags?.length ? [
 				'**Pinned Tags**',
 				allTags.filter(tag => tag.hoisted)
 					.map(tag => `\`${tag.name}\``)
 					.sort()
 					.join(', ')
-			]);
+			] : '');
 
 		const userTags = allTags.filter(tag => !tag.hoisted && tag.user === user?.id);
 		if (userTags.length && user) {

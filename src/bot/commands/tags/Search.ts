@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'discord-akairo';
+import { COLOR } from '#utils/Constants';
 
 export default class TagSearchCommand extends Command {
 	public constructor() {
@@ -26,6 +27,7 @@ export default class TagSearchCommand extends Command {
 		).toArray();
 
 		const embed = new MessageEmbed()
+			.setColor(COLOR)
 			.setAuthor(message.guild!.name, message.guild!.iconURL()!)
 			.setDescription([
 				'**Search Result**',

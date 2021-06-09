@@ -1,3 +1,5 @@
+export const COLOR = 0x0d051f;
+
 export const COLLECTION = {
     SETTINGS: 'settings',
     TAGS: 'tags',

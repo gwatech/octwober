@@ -36,6 +36,7 @@ export default class extends Command {
     }
 
     public async exec(message: Message, { prefix }: { prefix: string }) {
+        if (/^<@!?(\d+)>$/.test(message.content) && !message.mentions.has(this.client.user!.id)) return;
         if (!prefix) return message.inlineReply(`The current prefix for this guild is \`${message.guild?.prefix}\``);
 
         if (prefix && !message.member?.permissions.has('MANAGE_GUILD')) {

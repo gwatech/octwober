@@ -2,7 +2,7 @@ import { Listener } from 'discord-akairo';
 import { Message } from 'discord.js';
 import fetch from 'node-fetch';
 
-export default class ReadyListener extends Listener {
+export default class aiListener extends Listener {
     public constructor() {
         super('AIChat', {
             event: 'message',

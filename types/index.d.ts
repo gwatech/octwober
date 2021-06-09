@@ -42,4 +42,13 @@ declare module 'discord.js' {
         tags: TagHandler;
         commandHandler: CommandHandler;
     }
+
+    interface MessageMentionOptions {
+        repliedUser?: boolean;
+    }
+
+    interface Message {
+        inlineReply(content: StringResolvable, options?: MessageOptions): Promise<Message | Message[]>;
+        lineReplyNoMention(content: StringResolvable, options?: MessageOptions): Promise<Message | Message[]>;
+    }
 }

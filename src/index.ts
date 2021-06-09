@@ -3,6 +3,7 @@ Env.config();
 
 import Client from '#bot/client/Client';
 import '#bot/extentions/Guild';
+import '#bot/extentions/Message';
 
 const client = new Client();
 

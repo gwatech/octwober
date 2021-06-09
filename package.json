@@ -17,14 +17,14 @@
   },
   "homepage": "https://github.com/itsayushch/octwober#readme",
   "dependencies": {
-    "@types/common-tags": "^1.8.0",
     "chalk": "^4.1.1",
     "common-tags": "^1.8.0",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "moment": "^2.29.1",
-    "mongodb": "^3.6.8"
+    "mongodb": "^3.6.8",
+    "node-fetch": "^2.6.1"
   },
   "imports": {
     "#utils/*": "./dist/src/bot/utils/*.js",
@@ -33,7 +33,9 @@
     "#root/*": "./dist/*"
   },
   "devDependencies": {
+    "@types/common-tags": "^1.8.0",
     "@types/mongodb": "^3.6.16",
-    "@types/node": "^15.6.1"
+    "@types/node": "^15.6.1",
+    "@types/node-fetch": "^2.5.10"
   }
 }

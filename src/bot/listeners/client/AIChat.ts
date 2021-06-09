@@ -12,7 +12,7 @@ export default class ReadyListener extends Listener {
     }
 
     public async exec(message: Message) {
-        if (message.channel.id !== '852110177096564747') return;
+        if (message.channel.id !== '852110177096564747' || message.author.bot) return;
         const data = (await (
             await fetch(`https://api.monkedev.com/fun/chat?msg=${message.content}&uid=${message.author.id}`)
         ).json());

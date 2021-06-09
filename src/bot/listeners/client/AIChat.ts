@@ -3,6 +3,7 @@ import { Message } from 'discord.js';
 import fetch from 'node-fetch';
 
 export default class ReadyListener extends Listener {
+    private readonly cooldowns: Set<string> = new Set();
     public constructor() {
         super('AIChat', {
             event: 'message',
@@ -13,15 +14,17 @@ export default class ReadyListener extends Listener {
 
     public async exec(message: Message) {
         if (message.channel.id !== '852110177096564747' || message.author.bot) return;
-        const data = (await (
-            await fetch(`https://api.monkedev.com/fun/chat?msg=${message.content}&uid=${message.author.id}`)
-        ).json());
+        if (this.cooldowns.has(message.author.id)) return;
 
-        if (data.response) {
-            return message.inlineReply(data.response);
+        const data = (await (await fetch(`https://api.monkedev.com/fun/chat?msg=${message.content}&uid=${message.author.id}`)).json());
+        
+        this.cooldowns.add(message.author.id);
+        setTimeout(() => this.cooldowns.delete(message.author.id), 3 * 1000);
+        
+        if (!data?.response) {
+            return message.channel.send('Could not find response');
         }
 
-        return message.channel.send('Could not find response');
-
+        return message.inlineReply(data.response);
     }
 }

@@ -22,6 +22,7 @@ export default class HelpCommand extends Command {
 		const values = this.handler.categories.filter(f => f.id !== 'owner' &&  f.id !== 'default').values();
 		if (!command) {
 			const embed = new MessageEmbed()
+				.setColor(COLOR)
 				.setAuthor('Command List', this.client.user!.displayAvatarURL());
 			for (const category of values) {
 				embed.addField(

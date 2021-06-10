@@ -7,8 +7,7 @@ export default class TagCommand extends Command {
         super('tag', {
             aliases: ['tag'],
             category: 'tag',
-            clientPermissions: ['EMBED_LINKS'],
-            typing: true,
+            clientPermissions: ['EMBED_LINKS'],    
             description: {
                 content: stripIndents`Available methods:
                     • show \`<tag>\`

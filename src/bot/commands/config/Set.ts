@@ -5,8 +5,7 @@ export default class ConfigEnableCommand extends Command {
 		super('set', {
 			category: 'config',
 			aliases: ['set'],
-			clientPermissions: ['EMBED_LINKS'],
-			typing: true,
+			clientPermissions: ['EMBED_LINKS'],	
 			description: {}
 		});
 	}

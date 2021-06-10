@@ -6,8 +6,7 @@ export default class HelpCommand extends Command {
 	public constructor() {
 		super('help', {
 			aliases: ['help'],
-			category: 'util',
-			typing: true,
+			category: 'util',		
 			clientPermissions: ['EMBED_LINKS'],
 			args: [
 				{

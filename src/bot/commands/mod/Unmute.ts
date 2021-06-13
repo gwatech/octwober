@@ -4,7 +4,7 @@ import { Message, GuildMember } from 'discord.js';
 export default class UnmuteCommand extends Command {
     public constructor() {
         super('unmute', {
-            aliases: ['unmute-user', 'unmute'],
+            aliases: ['unmute'],
             category: 'mod',
             channel: 'guild',
             clientPermissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],

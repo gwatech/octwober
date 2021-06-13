@@ -4,8 +4,8 @@ import { GuildMember, Message } from 'discord.js';
 export default class NicknameCommand extends Command {
     public constructor() {
         super('nickname', {
-            aliases: ['change-nickname', 'cn', 'nick', 'nickname'],
-            category: 'mod',
+            aliases: ['nickname', 'cn', 'nick'],
+            category: 'utility',
             channel: 'guild',
             clientPermissions: ['MANAGE_NICKNAMES', 'CHANGE_NICKNAME', 'MANAGE_MESSAGES'],
             userPermissions: ['MANAGE_NICKNAMES'],

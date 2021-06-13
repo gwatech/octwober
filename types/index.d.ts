@@ -7,6 +7,7 @@ import { Connection } from '#struct/Database';
 import SettingsProvider from '#struct/SettingsProvider';
 import TagHandler from '#struct/TagHandler';
 import { SETTINGS } from '#bot/utils/Constants';
+import CaseHandler from '#struct/CaseHandler';
 
 declare module 'discord-akairo' {
     interface AkairoClient {
@@ -31,7 +32,7 @@ declare module 'discord.js' {
         setGuildLogChannel(id: string): Promise<UpdateWriteOpResult>;
         setModLogChannel(id: string): Promise<UpdateWriteOpResult>;
         setMemberLogChannel(id: string): Promise<UpdateWriteOpResult>;
-        log(message: any, key: keyof typeof SETTINGS, options?: any);
+        log(message: any, key: keyof typeof SETTINGS, options?: any): Promise<Message | undefined>;
         prefix: string;
     }
 
@@ -41,6 +42,7 @@ declare module 'discord.js' {
         logger: Logger;
         tags: TagHandler;
         commandHandler: CommandHandler;
+        cases: CaseHandler
     }
 
     interface MessageMentionOptions {

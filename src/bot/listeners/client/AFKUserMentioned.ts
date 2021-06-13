@@ -5,7 +5,7 @@ import ms from 'ms';
 export default class AFKUserMentionedListener extends Listener {
 
 	public constructor() {
-		super('afk', {
+		super('afkUserMentioned', {
 			event: 'message',
 			emitter: 'client',
 			category: 'client'

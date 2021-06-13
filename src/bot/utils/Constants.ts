@@ -4,8 +4,9 @@ export const COLLECTION = {
     SETTINGS: 'settings',
     TAGS: 'tags',
     CASES: 'cases',
-    REMINDERS: 'reminders',
-    ROLE_STATES: 'rolestates'
+    CASE_TOTAL: 'caseTotal',
+    ROLE_STATES: 'rolestates',
+    REMINDERS: 'reminders'
 };
 
 export const SETTINGS = {

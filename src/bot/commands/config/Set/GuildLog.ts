@@ -21,9 +21,9 @@ export default class extends Command {
 	}
 
 	public async exec(message: Message, { channel }: { channel: TextChannel }) {
-        if (!message.guild!.setGuildLogChannel(channel.id))
-            return message.util!.send(`I could not set the guild-log channel in ${channel}`);
+        const log = await message.guild!.setGuildLogChannel(channel.id);
+		if (!log) return message.inlineReply(`I could not set the guild-log channel in ${channel}`);
 
-        await message.util!.send(`Successfully set the guild-log channel in ${channel}`);
+        return message.inlineReply(`Successfully set the guild-log channel in ${channel}`);
 	}
 }

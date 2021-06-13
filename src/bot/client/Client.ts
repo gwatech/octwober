@@ -13,8 +13,8 @@ export default class Client extends AkairoClient {
     public settings!: SettingsProvider;
     public db!: Db;
     public logger: Logger = new Logger();
-    public tags: TagHandler  = new TagHandler(this);;
-    public cases: CaseHandler = new CaseHandler(this);
+    public tags!: TagHandler;
+    public cases!: CaseHandler;
 
     public commandHandler: CommandHandler = new CommandHandler(this, {
         directory: path.join(__dirname, '..', 'commands'),
@@ -72,6 +72,9 @@ export default class Client extends AkairoClient {
 
         this.settings = new SettingsProvider(this.db);
         await this.settings.init();
+
+        this.tags = new TagHandler(this);
+        this.cases = new CaseHandler(this);
 
         this.once('ready', async () => await this.cases.mutes.init());
     }

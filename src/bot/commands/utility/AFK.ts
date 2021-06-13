@@ -1,6 +1,7 @@
 import { Command } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { stripIndents } from 'common-tags';
+import { COLOR } from '#utils/Constants';
 
 export default class AFKCommand extends Command {
     constructor() {
@@ -36,7 +37,7 @@ export default class AFKCommand extends Command {
                 You are now set as afk with the reason: **${reason}**
                 Your AFK status will be cleared when you next chat.
             `)
-            .setColor('RANDOM')
+            .setColor(COLOR)
             .setTimestamp();
         return message.inlineReply(embed);
     }

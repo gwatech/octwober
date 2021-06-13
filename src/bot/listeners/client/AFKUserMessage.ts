@@ -17,7 +17,7 @@ export default class AFKUserMessageListener extends Listener {
 
         if (!afk) return;
         this.client.settings.delete(message.author?.id, 'afk')
-        return message.inlineReply(`**I have removed your AFK since you have sent a message. Your AFK duration was: **${ms(new Date().getTime() - afk.started.getTime())}**.`);
+        return message.inlineReply(`I have removed your AFK since you have sent a message.\nYour AFK duration was: **${ms(new Date().getTime() - afk.started.getTime())}**.`);
         
 	}
 

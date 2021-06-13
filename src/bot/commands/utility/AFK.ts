@@ -29,13 +29,15 @@ export default class AFKCommand extends Command {
         if (afkCurrent?.afk) return;
 
         await this.client.settings.set(message.author.id, 'afk', { afk: true, reason, started: new Date() });
-        await message.member?.setNickname(`AFK | ${message.member.user.username}`)
         
+        const nick = await message.member?.setNickname(`AFK | ${message.member.user.username}`).catch(() => null);
+    
         const embed = this.client.util.embed()
             .setAuthor(`AFK ➜ ${message.author.username}`, message.author.displayAvatarURL({ dynamic: true }))
             .setDescription(stripIndents`
                 You are now set as afk with the reason: **${reason}**
-                Your AFK status will be cleared when you next chat.
+                Your AFK status will be cleared when you chat.
+                ${!nick && `\nI was not able to change your nickname since I am missing permissions to do so.`}
             `)
             .setColor(COLOR)
             .setTimestamp();

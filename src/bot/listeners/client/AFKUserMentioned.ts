@@ -20,7 +20,7 @@ export default class AFKUserMentionedListener extends Listener {
 
         const afk = this.client.settings.get<{ afk: boolean; reason: string; started: Date }>(mention.id, 'afk');
 
-        if (afk) return message.inlineReply(`**${mention.user?.tag}** since ${ms(new Date().getTime() - afk.started.getTime())} is in AFK. Reason: \`${afk?.reason}\``);
+        if (afk) return message.inlineReply(`**${mention.user?.tag}** is in AFK since ${ms(new Date().getTime() - afk.started.getTime(), { long: true })}. Reason: \`${afk?.reason}\``);
 	}
 
 }

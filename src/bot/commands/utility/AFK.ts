@@ -1,7 +1,6 @@
 import { Command } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { stripIndents } from 'common-tags';
-import { COLOR } from '#utils/Constants';
 
 export default class AFKCommand extends Command {
     constructor() {
@@ -32,15 +31,10 @@ export default class AFKCommand extends Command {
         
         const nick = await message.member?.setNickname(`AFK | ${message.member.user.username}`).catch(() => null);
     
-        const embed = this.client.util.embed()
-            .setAuthor(`AFK ➜ ${message.author.username}`, message.author.displayAvatarURL({ dynamic: true }))
-            .setDescription(stripIndents`
-                You are now set as afk with the reason: **${reason}**
-                Your AFK status will be cleared when you chat.
-                ${!nick && `\nI was not able to change your nickname since I am missing permissions to do so.`}
-            `)
-            .setColor(COLOR)
-            .setTimestamp();
-        return message.inlineReply(embed);
+        return message.inlineReply(stripIndents`
+            You are now set as afk with the reason: **${reason}**
+            Your AFK status will be cleared when you chat.
+            ${!nick ? `\nI was not able to change your nickname since I am missing permissions to do so.` : ''}
+        `);
     }
 }

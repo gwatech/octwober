@@ -8,7 +8,7 @@ import { COLLECTION, CASES } from '#utils/Constants';
 export default class MuteCommand extends Command {
     public constructor() {
         super('mute', {
-            aliases: ['mute-user', 'mute'],
+            aliases: ['mute'],
             category: 'mod',
             channel: 'guild',
             clientPermissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES'],

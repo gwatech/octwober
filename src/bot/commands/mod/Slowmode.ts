@@ -5,7 +5,7 @@ import ms from 'ms';
 export default class SlowmodeCommand extends Command {
     public constructor() {
         super('slowmode', {
-            aliases: ['channel-slowmode', 'slowmode'],
+            aliases: ['slowmode'],
             category: 'mod',
             channel: 'guild',
             clientPermissions: ['MANAGE_CHANNELS', 'MANAGE_MESSAGES'],

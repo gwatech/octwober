@@ -6,8 +6,8 @@ import { stripIndents } from 'common-tags';
 export default class KickCommand extends Command {
     public constructor() {
         super('kick', {
-            aliases: ['kick-user', 'kick'],
-            category: 'Moderation',
+            aliases: ['kick'],
+            category: 'mod',
             channel: 'guild',
             clientPermissions: ['KICK_MEMBERS', 'MANAGE_MESSAGES'],
             userPermissions: ['KICK_MEMBERS'],

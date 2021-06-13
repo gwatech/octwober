@@ -13,6 +13,7 @@ export default class AFKUserMentionedListener extends Listener {
 	}
 
 	public async exec(message: Message) {
+		if (message.author.bot) return;
 		const mention = message.mentions.members?.first();
 
         if (!mention) return;

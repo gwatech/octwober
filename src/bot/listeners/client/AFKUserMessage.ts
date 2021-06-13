@@ -13,6 +13,8 @@ export default class AFKUserMessageListener extends Listener {
 	}
 
 	public async exec(message: Message) {
+		if (message.author.bot) return;
+
         const afk = this.client.settings.get<{ afk: boolean; reason: string; started: Date }>(message.author.id, 'afk');
 
         if (!afk) return;

@@ -72,8 +72,8 @@ export default class PurgeCommand extends Command {
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
             .setDescription(stripIndents`
                 **Action:** BAN
-                **Count:** ${message.channel}
-                **Channel:** ${messages.length}
+                **Count:** ${messages.length}
+                **Channel:** ${message.channel}
             `)
             .setTimestamp();
 

@@ -1,5 +1,5 @@
 import { Listener } from 'discord-akairo';
-import { Message } from 'discord.js';
+import { Message, Util } from 'discord.js';
 import fetch from 'node-fetch';
 
 export default class AIChatListener extends Listener {
@@ -25,6 +25,6 @@ export default class AIChatListener extends Listener {
             return message.channel.send('Could not find response');
         }
 
-        return message.inlineReply(data.response);
+        return message.inlineReply(Util.cleanContent(data.response, message));
     }
 }

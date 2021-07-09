@@ -1,88 +1,120 @@
 import { Command, Flag, Argument } from 'discord-akairo';
-import { Util, Message } from 'discord.js';
+import { Message } from 'discord.js';
+import { codeBlock, isThenable } from '@sapphire/utilities';
+import { Type } from '@sapphire/type';
+import fetch from 'node-fetch';
 import util from 'util';
 
 export default class EvalCommand extends Command {
-	private readonly _replaceToken!: string;
+    public constructor() {
+        super('eval', {
+            aliases: ['eval', 'e'],
+            category: 'owner',
+            ownerOnly: true,
+            description: {},
+            optionFlags: ['--depth', '-d']
+        });
+    }
 
-	public constructor() {
-		super('eval', {
-			aliases: ['eval', 'e'],
-			category: 'owner',
-			ownerOnly: true,
-			description: {},
-			optionFlags: ['--depth', '-d']
-		});
-	}
+    public *args(): unknown {
+        const asyncFlag = yield {
+            match: 'flag',
+            flag: ['--async', '-async'],
+            default: false
+        };
 
-	public *args(): unknown {
-		const depth = yield {
-			'match': 'option',
-			'type': Argument.range('integer', 0, 3, true),
-			'flag': ['--depth', '-d'],
-			'default': 0
-		};
+        const depth = yield {
+            match: 'option',
+            type: Argument.range('integer', 0, 3, true),
+            flag: ['--depth', '-d'],
+            default: 0
+        };
 
-		const code = yield {
-			match: 'rest',
-			type: (msg: Message, code: string) => {
-				if (!code) return Flag.cancel();
-				return code;
-			}
-		};
+        const code = yield {
+            match: 'rest',
+            type: (msg: Message, code: string) => {
+                if (!code) return Flag.cancel();
+                return code;
+            }
+        };
 
-		return { code, depth };
-	}
+        return { code, asyncFlag, depth };
+    }
 
-	public async exec(message: Message, { code, depth }: { code: string; depth: number }) {
-		let hrDiff;
-		let evaled;
-		try {
-			const hrStart = process.hrtime();
-			evaled = await eval(code); // eslint-disable-line
-			hrDiff = process.hrtime(hrStart);
-		} catch (error) {
-			return message.util!.send(`*Error while evaluating!* \n\`\`\`js\n${error as string}\n\`\`\``);
-		}
+    public async exec(
+        message: Message,
+        { code, asyncFlag, depth }: { code: string; asyncFlag: boolean; depth: number }
+    ) {
+        let { result, success, type } = await this.eval(message, code, {
+            async: asyncFlag,
+            depth: depth
+        });
 
-		const result = this.result(evaled, hrDiff, depth);
-		if (Array.isArray(result)) {
-			return result.map(async (res, index) => {
-				if (index === 0) return message.util!.send(res);
-				return message.channel.send(res);
-			});
-		}
-		return message.util!.send(result);
-	}
+        const token = this.client.token!.split('').join('[^]{0,2}');
+        const rev = this.client.token!.split('').reverse().join('[^]{0,2}');
+        const filter = new RegExp(`${token}|${rev}`, 'g');
 
-	private result(result: string, hrDiff: number[], depth: number) {
-		const inspected = util.inspect(result, { depth })
-			.replace(new RegExp('!!NL!!', 'g'), '\n')
-			.replace(this.replaceToken, '--🙄--');
+        result = result.replace(filter, '[TOKEN ENCRYPTED]');
+        result = this.clean(result);
+        const output = success ? codeBlock('js', result) : `**ERROR**: ${codeBlock('bash', result)}`;
 
-		const split = inspected.split('\n');
-		const last = inspected.length - 1;
-		const prependPart = inspected[0] !== '{' && inspected[0] !== '[' && inspected[0] !== '\'' ? split[0] : inspected[0];
-		const appendPart = inspected[last] !== '}' && inspected[last] !== ']' && inspected[last] !== '\'' ? split[split.length - 1] : inspected[last];
-		const prepend = `\`\`\`js\n${prependPart}\n`;
-		const append = `\n${appendPart}\n\`\`\``;
+        const typeFooter = `**Type**: ${codeBlock('typescript', type)}`;
 
-		return Util.splitMessage(
-			`*Executed in ${this.totalTime(hrDiff).toFixed(2)}ms* \`\`\`js\n${inspected}\`\`\``,
-			{ maxLength: 1900, prepend, append }
-		);
-	}
+        if (output.length > 2000) {
+            try {
+                const haste = await this.getHaste(result);
+                return message.util?.send(`${haste}\n\n${typeFooter}`);
+            } catch (e) {
+                console.log(e);
+                return message.util?.send(`Output was too long. Sent the result as a file.`, {
+                    files: [{ attachment: Buffer.from(output), name: 'output.txt' }]
+                });
+            }
+        }
 
-	private get replaceToken() {
-		if (!this._replaceToken) {
-			const token = this.client.token!.split('').join('[^]{0,2}');
-			const revToken = this.client.token!.split('').reverse().join('[^]{0,2}');
-			Object.defineProperty(this, '_replaceToken', { value: new RegExp(`${token}|${revToken}`, 'g') });
-		}
-		return this._replaceToken;
-	}
+        return message.util?.send(`${output}\n${typeFooter}`);
+    }
 
-	private totalTime(hrDiff: number[]) {
-		return (hrDiff[0] * 1000) + (hrDiff[1] / 1000000);
-	}
+    private async eval(message: Message, code: string, flags: { async: boolean; depth: number }) {
+        if (flags.async) code = `(async () => {\n${code}\n})();`;
+        let success = true;
+        let result = null;
+        try {
+            // eslint-disable-next-line no-eval
+            result = eval(code);
+        } catch (error) {
+            if (error && error.stack) {
+                this.client.logger.error(error, { label: 'ERROR' });
+            }
+            result = error;
+            success = false;
+        }
+
+        const type = new Type(result).toString();
+        if (isThenable(result)) result = await result;
+
+        if (typeof result !== 'string') {
+            result = util.inspect(result, {
+                depth: flags.depth
+            });
+        }
+
+        return { result, success, type };
+    }
+
+    private async getHaste(result: string) {
+        const res = await fetch('https://hastebin.skyra.pw/documents', {
+            method: 'POST',
+            body: result,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const { key } = await res?.json();
+        return `https://hastebin.skyra.pw/${key}.js`;
+    }
+
+    private clean(text: string) {
+        return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`);
+    }
 }

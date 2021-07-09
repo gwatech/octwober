@@ -1,44 +1,57 @@
 {
-  "name": "octwober",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/src/index.js",
-  "scripts": {
-    "start": "tsc && node dist/src/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/itsayushch/octwober.git"
-  },
-  "author": "Ayush Chowdhury <itsayushch@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/itsayushch/octwober/issues"
-  },
-  "homepage": "https://github.com/itsayushch/octwober#readme",
-  "dependencies": {
-    "chalk": "^4.1.1",
-    "common-tags": "^1.8.0",
-    "discord-akairo": "^8.1.0",
-    "discord.js": "^12.5.3",
-    "dotenv": "^10.0.0",
-    "mathjs": "^9.4.2",
-    "moment": "^2.29.1",
-    "mongodb": "^3.6.8",
-    "ms": "^2.1.3",
-    "node-fetch": "^2.6.1"
-  },
-  "imports": {
-    "#utils/*": "./dist/src/bot/utils/*.js",
-    "#struct/*": "./dist/src/bot/struct/*.js",
-    "#bot/*": "./dist/src/bot/*.js",
-    "#root/*": "./dist/*"
-  },
-  "devDependencies": {
-    "@types/common-tags": "^1.8.0",
-    "@types/mongodb": "^3.6.16",
-    "@types/ms": "^0.7.31",
-    "@types/node": "^15.6.1",
-    "@types/node-fetch": "^2.5.10"
-  }
+    "name": "octwober",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/src/index.js",
+    "scripts": {
+        "start": "tsc && node dist/src/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/itsayushch/octwober.git"
+    },
+    "author": "Ayush Chowdhury <itsayushch@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/itsayushch/octwober/issues"
+    },
+    "homepage": "https://github.com/itsayushch/octwober#readme",
+    "dependencies": {
+        "@sapphire/type": "^2.0.11",
+        "@sapphire/utilities": "^1.6.1",
+        "chalk": "^4.1.1",
+        "common-tags": "^1.8.0",
+        "discord-akairo": "^8.1.0",
+        "discord.js": "^12.5.3",
+        "dotenv": "^10.0.0",
+        "mathjs": "^9.4.2",
+        "moment": "^2.29.1",
+        "mongodb": "^3.6.8",
+        "ms": "^2.1.3",
+        "node-fetch": "^2.6.1",
+        "shelljs": "^0.8.4"
+    },
+    "imports": {
+        "#utils/*": "./dist/src/bot/utils/*.js",
+        "#struct/*": "./dist/src/bot/struct/*.js",
+        "#bot/*": "./dist/src/bot/*.js",
+        "#root/*": "./dist/*"
+    },
+    "devDependencies": {
+        "@types/common-tags": "^1.8.0",
+        "@types/mongodb": "^3.6.16",
+        "@types/ms": "^0.7.31",
+        "@types/node": "^15.6.1",
+        "@types/node-fetch": "^2.5.10",
+        "@types/shelljs": "^0.8.9"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "semi": true,
+        "singleQuote": true,
+        "bracketSpacing": true,
+        "trailingComma": "none",
+        "tabWidth": 4,
+        "importOrderSeparation": true
+    }
 }

@@ -65,20 +65,28 @@ export default class PurgeCommand extends Command {
             return message.util!.send(`Failed to purge messages!`);
         }
 
-        await message.util!.send(`Successfully deleted **${messages.length}** messages!`);
+        await message
+            .util!.send(`Successfully deleted **${messages.length}** messages!`)
+            .then((msg) => msg.delete({ timeout: 3000 }));
 
-        const embed = this.client.util.embed()
+        const embed = this.client.util
+            .embed()
             .setColor(COLOR)
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
-            .setDescription(stripIndents`
-                **Action:** BAN
+            .setDescription(
+                stripIndents`
+                **Action:** MESSAGES PURGED
                 **Count:** ${messages.length}
                 **Channel:** ${message.channel}
-            `)
+            `
+            )
             .setTimestamp();
 
-        return message.guild?.log({
-            embeds: [embed.toJSON()]
-        }, 'MOD_LOG');
+        return message.guild?.log(
+            {
+                embeds: [embed.toJSON()]
+            },
+            'MOD_LOG'
+        );
     }
 }

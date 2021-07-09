@@ -12,6 +12,7 @@ export default class EvalCommand extends Command {
             category: 'owner',
             ownerOnly: true,
             description: {},
+            flags: ['--async', '-async'],
             optionFlags: ['--depth', '-d']
         });
     }

@@ -12,18 +12,11 @@ export default class EvalCommand extends Command {
             category: 'owner',
             ownerOnly: true,
             description: {},
-            flags: ['--async', '-async'],
             optionFlags: ['--depth', '-d']
         });
     }
 
     public *args(): unknown {
-        const asyncFlag = yield {
-            match: 'flag',
-            flag: ['--async', '-async'],
-            default: false
-        };
-
         const depth = yield {
             match: 'option',
             type: Argument.range('integer', 0, 3, true),
@@ -39,17 +32,11 @@ export default class EvalCommand extends Command {
             }
         };
 
-        return { code, asyncFlag, depth };
+        return { code, depth };
     }
 
-    public async exec(
-        message: Message,
-        { code, asyncFlag, depth }: { code: string; asyncFlag: boolean; depth: number }
-    ) {
-        let { result, success, type } = await this.eval(message, code, {
-            async: asyncFlag,
-            depth: depth
-        });
+    public async exec(message: Message, { code, depth }: { code: string; depth: number }) {
+        let { result, success, type } = await this.eval(message, code, depth);
 
         const token = this.client.token!.split('').join('[^]{0,2}');
         const rev = this.client.token!.split('').reverse().join('[^]{0,2}');
@@ -76,8 +63,7 @@ export default class EvalCommand extends Command {
         return message.util?.send(`${output}\n${typeFooter}`);
     }
 
-    private async eval(message: Message, code: string, flags: { async: boolean; depth: number }) {
-        if (flags.async) code = `(async () => {\n${code}\n})();`;
+    private async eval(message: Message, code: string, depth: number) {
         let success = true;
         let result = null;
         try {
@@ -96,7 +82,7 @@ export default class EvalCommand extends Command {
 
         if (typeof result !== 'string') {
             result = util.inspect(result, {
-                depth: flags.depth
+                depth: depth
             });
         }
 

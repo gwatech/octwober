@@ -36,11 +36,11 @@ export default class CountingListener extends Listener {
                 count,
                 lastUser
             });
-            message.react('765561568196034571');
+            message.react('864414233986859048');
             return message.channel.send('Incorrect number! The next number is `1`. **No stats have been changed since the current number was 0.**');
         } else if (count === num + 1) {
             if (lastUser && lastUser === message.author.id) {
-                message.react('765561568196034571');
+                message.react('864414233986859048');
                 const Lastnum = num;
                 lastUser = undefined;
                 num = 0;
@@ -58,9 +58,9 @@ export default class CountingListener extends Listener {
                 count,
                 lastUser
             });
-            return message.react('711106998967599156');
+            return message.react('865121425723228171');
         } else {
-            message.react('765561568196034571');
+            message.react('864414233986859048');
             const Lastnum: number = num;
             lastUser = undefined;
             num = 0;

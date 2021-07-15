@@ -16,7 +16,7 @@ export default class GuildMemberAddListener extends Listener {
         return member.user.bot
             ? channel.send(`<a:bearkill:765568778905321482>${member.toString()}, Welcome! Oh it's a bot`)
             : channel.send(stripIndents`
-                    <a:Hi:765766930761383976> Welcome ${member.toString()}!
+                    <a:Hi:864535083641864192> Welcome ${member.toString()}!
                     Make sure to read the rules in <#694554850708684833> and get your roles from <#730014542209351750>.
                     Happy **${this.getDay()}!** <a:blobdance:765766933017526283>
                 `)

@@ -14,9 +14,9 @@ export default class GuildMemberRemoveListener extends Listener {
         const channel = this.client.channels.cache.get('768300525456064533') as TextChannel;
 
         return member.user.bot
-            ? channel.send(`<a:crii:765561558335225887> **${member.user.username}** left the server! Oh it's a bot`)
+            ? channel.send(`<a:crii:865121425723228171> **${member.user.username}** left the server! Oh it's a bot`)
             : channel.send(
-                  `<a:crii:765561558335225887> **${member.user.username}** left the server! ${this.randomMessage()}`
+                  `<a:crii:865121425723228171> **${member.user.username}** left the server! ${this.randomMessage()}`
               );
     }
 

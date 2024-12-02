@@ -1,42 +1,30 @@
 import './lib/setup';
-
-import { LogLevel, SapphireClient } from '@sapphire/framework';
+import { LogLevel } from '@sapphire/framework';
 import { GatewayIntentBits, Partials } from 'discord.js';
+import { Client } from './handler/Client';
 
-const client = new SapphireClient({
-	defaultPrefix: '!',
-	regexPrefix: /^(hey +)?bot[,! ]/i,
+const client = new Client({
+	defaultPrefix: ';',
+	regexPrefix: /^(hey +)?octwober[,! ]/i,
 	caseInsensitiveCommands: true,
 	logger: {
 		level: LogLevel.Debug
 	},
 	shards: 'auto',
 	intents: [
-		GatewayIntentBits.DirectMessageReactions,
-		GatewayIntentBits.DirectMessages,
-		GatewayIntentBits.GuildModeration,
-		GatewayIntentBits.GuildEmojisAndStickers,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildEmojisAndStickers,
 		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageReactions,
+		GatewayIntentBits.GuildPresences,
 		GatewayIntentBits.MessageContent
 	],
 	partials: [Partials.Channel],
 	loadMessageCommandListeners: true
 });
 
-const main = async () => {
-	try {
-		client.logger.info('Logging in');
-		await client.login();
-		client.logger.info('logged in');
-	} catch (error) {
-		client.logger.fatal(error);
-		await client.destroy();
-		process.exit(1);
-	}
-};
-
-void main();
+client.init();

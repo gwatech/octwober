@@ -1,39 +1,54 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, type Args } from '@sapphire/framework';
+import { Args, Command } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
 import { inspect } from 'util';
+import fetch from 'cross-fetch';
 
 @ApplyOptions<Command.Options>({
-	aliases: ['ev'],
+	aliases: ['e'],
 	description: 'Evals any JavaScript code',
 	quotes: [],
 	preconditions: ['OwnerOnly'],
 	flags: ['async', 'hidden', 'showHidden', 'silent', 's'],
 	options: ['depth']
 })
+
 export class UserCommand extends Command {
 	public override async messageRun(message: Message, args: Args) {
-		const code = await args.rest('string');
+		const code = await args.rest('string').catch(() => null);
 
-		const { result, success, type } = await this.eval(message, code, {
+		if (!code) return send(message, 'Laude code daal BC');
+
+		let { result, success, type } = await this.eval(message, code, {
 			async: args.getFlags('async'),
 			depth: Number(args.getOption('depth')) ?? 0,
 			showHidden: args.getFlags('hidden', 'showHidden')
 		});
 
+		const token = this.container.client.token!.split('').join('[^]{0,2}');
+		const rev = this.container.client.token!.split('').reverse().join('[^]{0,2}');
+		const filter = new RegExp(`${token}|${rev}`, 'g');
+
+		result = result.replace(filter, '[TOKEN ENCRYPTED]');
+		result = this.clean(result);
 		const output = success ? codeBlock('js', result) : `**ERROR**: ${codeBlock('bash', result)}`;
 		if (args.getFlags('silent', 's')) return null;
 
 		const typeFooter = `**Type**: ${codeBlock('typescript', type)}`;
 
 		if (output.length > 2000) {
-			return send(message, {
-				content: `Output was too long... sent the result as a file.\n\n${typeFooter}`,
-				files: [{ attachment: Buffer.from(output), name: 'output.js' }]
-			});
+			try {
+				const haste = await this.getHaste(result);
+				return send(message, `${haste}\n\n${typeFooter}`);
+			} catch (e) {
+				return send(message, {
+					content: `Output was too long... sent the result as a file.\n\n${typeFooter}`,
+					files: [{ attachment: Buffer.from(output), name: 'output.js' }]
+				});
+			}
 		}
 
 		return send(message, `${output}\n${typeFooter}`);
@@ -43,7 +58,7 @@ export class UserCommand extends Command {
 		if (flags.async) code = `(async () => {\n${code}\n})();`;
 
 		// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars		
 		const msg = message;
 
 		let success = true;
@@ -71,5 +86,21 @@ export class UserCommand extends Command {
 		}
 
 		return { result, success, type };
+	}
+
+	private async getHaste(result: string) {
+		const res = await fetch('https://hastebin.skyra.pw/documents', {
+			method: 'POST',
+			body: result,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		const { key } = await res?.json();
+		return `https://hastebin.skyra.pw/${key}.js`;
+	}
+
+	private clean(text: string) {
+		return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`);
 	}
 }
